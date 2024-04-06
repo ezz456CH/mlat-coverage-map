@@ -147,7 +147,7 @@ function getRegionsMetadata() {
 function getStationsForRegion(regionInfo) {
   return new Promise((resolve, reject) => {
     const stations = {};
-    var dataUrl = `sync/${regionInfo.region}/sync.json`;
+    var dataUrl = `/sync/${regionInfo.region}/sync.json`;
     console.log('Loading region data from', dataUrl);
     $.getJSON(dataUrl, data => {
       const region = regionInfo.region;
