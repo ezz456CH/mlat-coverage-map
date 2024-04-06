@@ -336,7 +336,7 @@ function selectStation(stationInfo) {
   if (regionInfo) {
     $('#si-region').text(`${regionInfo.name} (${region})`);
     const euc = encodeURIComponent;
-    const syncUrl = new URL(`/sync/feeder.html?${euc(region)}&${euc(stationInfo.name)}`, 'https://map.adsbexchange.com/').toString();
+    const syncUrl = new URL(`/sync/feeder.html?${euc(region)}&${euc(stationInfo.name)}`, 'https://adsb.ezz456ch.xyz/').toString();
     $('#si-sync-stats-link').attr('href', syncUrl).attr('target', '_blank');
   } else {
     $('#si-region').text('Unknown');
@@ -436,14 +436,13 @@ async function initialize() {
   // Create map.
   map = L.map('map-canvas');
   L.control.scale({ maxWidth: 100 }).addTo(map);
-  var osm = L.tileLayer('https://map.adsbexchange.com/mapproxy/tiles/1.0.0/osm/osm_grid/{z}/{x}/{y}.png', {
-    attribution: '&#169 <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>  contributors.',
+  var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/ezz456ch/clqq1uwtg00s801qy1ywxg1sa/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZXp6NDU2Y2giLCJhIjoiY2xyejA2c21qMXR1ZjJtcHF4OWNwYmx0ayJ9.t0RfR9x4m8owrAuoVlnQtQ', {
+    attribution: '<a href="https://www.mapbox.com/about/maps/">© Mapbox</a> <a href="https://www.openstreetmap.org/">© OpenStreetMap</a>',
     minZoom: 2,
-    maxZoom: 17,
-    opacity: 0.75,
+    maxZoom: 18,
   });
-  // Add the OSM layer to the map
-  map.addLayer(osm);
+  // Add the mapbox layer to the map
+  map.addLayer(mapbox);
   map.fitWorld();
   map.on('click', () => selectStation(null));
 
