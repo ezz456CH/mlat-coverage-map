@@ -1,9 +1,38 @@
+@font-face {
+    font-family: Cascadia Code;
+    src: url(Kanit-Regular.ttf) format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
 html, body {
+    background-color: #212121;
+    color: #ffffff
     height: 100%;
     margin: 0;
     padding: 0px;
-    font-family: "Source Sans Pro";
+    font-family: "Cascadia Code";
     font-size: 16px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-corner {
+    background: #212121;
 }
 
 @media screen and (min-width: 600px) {
@@ -23,8 +52,16 @@ h2 {
 }
 
 input {
-    font-family: "Source Sans Pro";
+    height: 20px;
+    color: #ffffff;
+    background-color: #191919;
+    font-family: "Cascadia Code";
     font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    outline: none;
 }
 
 @media screen and (max-width: 599px) {
@@ -47,7 +84,7 @@ input {
 }
 
 .progresslabel {
-    font-family: "Source Sans Pro";
+    font-family: "Cascadia Code";
     font-size: 16px;
     position: absolute;
     margin-block-start: 0;
@@ -71,6 +108,23 @@ input {
     }
 }
 
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    background: transparent;
+    color: #ffffff;
+    box-shadow: none;
+    pointer-events: none;
+    user-select: none;
+}
+
+.leaflet-popup-content{
+    margin: 13px 19px;
+    line-height: 1;
+    font-family: "Cascadia Code";
+}
+.leaflet-container a.leaflet-popup-close-button {
+    display: none;
+}
+
 #map-canvas {
     height: 100%;
     margin: 0px;
@@ -91,6 +145,7 @@ input {
 
 #stations-container {
     height: 200px;
+    margin-top: 20px;
     overflow: scroll;
 }
 
@@ -102,16 +157,15 @@ input {
 }
 
 #stations li a {
-    border: 1px solid #ddd; /* Add a border to all links */
-    margin-top: -1px; /* Prevent double borders */
-    background-color: #f6f6f6; /* Grey background color */
-    text-decoration: none; /* Remove default text underline */
-    color: black; /* Add a black text color */
-    display: block; /* Make it into a block element to fill the whole list */
+    margin-top: -1px;
+    background-color: #f6f6f638;
+    text-decoration: none;
+    color: white;
+    display: block;
 }
 
 #stations li a:hover:not(.header) {
-    background-color: #eee; /* Add a hover effect to all links, except for headers */
+    background-color: #bababa; /* Add a hover effect to all links, except for headers */
 }
 
 .note {
