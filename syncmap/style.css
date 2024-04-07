@@ -88,17 +88,17 @@ input:focus {
     }
 }
 
-.progresslabel {
+#progresslabel {
     font-family: "Cascadia Code";
     font-size: 16px;
     position: absolute;
-    margin-block-start: 0;
+    margin: auto;
 }
 
 #progressbar {
     height: 20px;
     color: #ababab;
-    background-color: #191919;
+    background-color: transparent;
     border: none;
 }
 
