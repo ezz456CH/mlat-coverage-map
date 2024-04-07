@@ -380,7 +380,6 @@ function selectStation(stationInfo) {
 
   drawLinesToPeers(stationInfo);
   map.panInside(stationInfo.marker.getLatLng(), { padding: [300, 300] });
-  stationInfo.marker.bindPopup(escape(stationInfo.name)).openPopup();
 }
 
 
@@ -436,7 +435,7 @@ async function initialize() {
   // Create map.
   map = L.map('map-canvas');
   L.control.scale({ maxWidth: 100 }).addTo(map);
-  var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/ezz456ch/clqq1uwtg00s801qy1ywxg1sa/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZXp6NDU2Y2giLCJhIjoiY2xyejA2c21qMXR1ZjJtcHF4OWNwYmx0ayJ9.t0RfR9x4m8owrAuoVlnQtQ', {
+  var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/ezz456ch/clukyvend002x01pb8xor4jrr/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZXp6NDU2Y2giLCJhIjoiY2xyejA2c21qMXR1ZjJtcHF4OWNwYmx0ayJ9.t0RfR9x4m8owrAuoVlnQtQ', {
     attribution: '<a href="https://www.mapbox.com/about/maps/">© Mapbox</a> <a href="https://www.openstreetmap.org/">© OpenStreetMap</a>',
     minZoom: 2,
     maxZoom: 18,
@@ -454,6 +453,7 @@ async function initialize() {
     .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
     .forEach(k => {
       const station = allStationInfos[k];
-      $('<li><a href="#">' + k + '</a></li>').attr('id', 'li-' + k).click(() => selectStation(station)).appendTo($('#stations'));
+      const stationname = k.split(':')[1].trim();
+      $('<li><a href="#">' + stationname + '</a></li>').attr('id', 'li-' + k).click(() => selectStation(station)).appendTo($('#stations'));
     });
 }
