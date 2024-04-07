@@ -380,6 +380,7 @@ function selectStation(stationInfo) {
 
   drawLinesToPeers(stationInfo);
   map.panInside(stationInfo.marker.getLatLng(), { padding: [300, 300] });
+  stationInfo.marker.bindPopup(escape(stationInfo.name)).openPopup();
 }
 
 
@@ -396,7 +397,7 @@ function addStationsToMap(map, stationInfos) {
         {
           color: regionMarkerColor(s.region),
           radius: 8
-        }).addTo(map).bindTooltip(s.name);
+        }).addTo(map);
       s.marker = marker;
       marker.on('click', (e) => {
         L.DomEvent.stopPropagation(e);

@@ -96,6 +96,9 @@ input:focus {
 }
 
 #progressbar {
+    color: #ababab;
+    background-color: #191919;
+    border: none;
 }
 
 @media screen and (max-width: 599px) {
@@ -111,6 +114,10 @@ input:focus {
         height: 100%;
         margin-right: 15px;
     }
+}
+
+.leaflet-container {
+    font: 12px/1.5 "Cascadia Code";
 }
 
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
@@ -184,7 +191,7 @@ link {
 }
 
 .error {
-    color: #d00;
+    color: #ff8585;
 }
 
 .si-label {
