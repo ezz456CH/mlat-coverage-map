@@ -348,7 +348,7 @@ function selectStation(stationInfo) {
     $('#si-closest-peer-dist').text('-');
     $('#si-farthest-peer-dist').text('-');
   } else if (stationInfo.peers) {
-    $('#si-num-label').text('# synced peers:');
+    $('#si-num-label').text('Synced peers:');
     $('#si-num-peers').text(Object.keys(stationInfo.peers).length);
     const peerDistances = Object.keys(stationInfo.peers)
       .filter(p => allStationInfos[p] && allStationInfos[p].lat)

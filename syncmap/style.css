@@ -96,6 +96,7 @@ input:focus {
 }
 
 #progressbar {
+    height: 20px;
     color: #ababab;
     background-color: #191919;
     border: none;
@@ -156,7 +157,7 @@ input:focus {
 }
 
 #si-sync-stats-link,
-link {
+.link {
     color: #ababab;
 }
 
