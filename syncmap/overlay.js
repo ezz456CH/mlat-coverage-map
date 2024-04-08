@@ -1,460 +1,158 @@
-/*
-MIT License
+mapboxgl.accessToken = 'pk.eyJ1IjoiZXp6NDU2Y2giLCJhIjoiY2xyejA2c21qMXR1ZjJtcHF4OWNwYmx0ayJ9.t0RfR9x4m8owrAuoVlnQtQ';
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/ezz456ch/clukyvend002x01pb8xor4jrr',
+    zoom: 1.5,
+    hash: true
+});
 
-Copyright (c) 2019 John Wiseman
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-
-
-"use strict";
-
-var map;
-
-// RegionInfo looks like this:
-// {
-//   "region": "3A-2",
-//   "name": "North-Western Europe (2)",
-//   "enabled": true
-// }
-//
-// This is an array of RegionInfos.
-let allRegionInfos;
-
-// StationInfo looks like this:
-//
-// {
-//   name: '146csbr',
-//   lat: 37.75,
-//   lon: -122.45,
-//   region: "3A-2",
-//   marker: <Leaflet Marker>
-//   peers: <peer info>
-// }
-//
-// This is an object whose keys are station keys, which are strings
-// with the format "<region ID>:<station ID>", and whose values are
-// StationInfos.
-const allStationInfos = {};
-
-
-// Create a unique key for a station from its region and ID.
-
-function stationKey(regionId, stationId) {
-  return `${regionId}:${stationId}`;
-}
-
-
-// Station markers get a different color for each region.
-
-const regionMarkerColors = {
-  "1A": "#8dd3c7",
-  "1B": "#1f78b4",
-  "1C": "#ff7f00",
-  "2A": "#9fdc6a",
-  "2B": "#33a02c",
-  "2C": "#dddddd",
-  "3A": "#fb9a99",
-  "3B": "#33a02c",
-  "3C": "#e31a1c",
-  "4A": "#ff7f00",
-  "4B": "#cab2d6",
-  "4C": "#1f78b4",
-  "5A": "#6a3d9a",
-  "5B": "#1e3f5a",
-  "5C": "#fdbf6f",
-};
-
-function regionMarkerColor(region) {
-  const color = regionMarkerColors[region];
-  return color || "#000000";
-}
-
-function toRad(x) {
-  return x * Math.PI / 180;
-}
-
-function distanceKm(lat1, lon1, lat2, lon2) {
-  const R = 6371; // km
-  const x1 = lat2 - lat1;
-  const dLat = toRad(x1);
-  const x2 = lon2 - lon1;
-  const dLon = toRad(x2);
-  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const d = R * c;
-  return d;
-}
-
-function stationDistanceKm(s1, s2) {
-  return distanceKm(s1.lat, s1.lon, s2.lat, s2.lon);
-}
-
-
-// Fetches the JSON that lists all regions. The metadata is an
-// object whose keys are unknown ("0", "10", "20", etc.) but whose values
-// are objects with region, name, and enabled properties.
-//
-// Returns a promise for the JSON.
-
-function getRegionsMetadata() {
-  return new Promise((resolve, reject) => {
-    $('#progressbar').progressbar({ max: 50 });
-    $('#progresslabel').text('Loading regions...');
-    const url = 'mirror_regions.json';
-    console.log('Loading regions metadata from', url);
-    $.getJSON(url, data => {
-      $('#progressbar').progressbar("value", 1);
-      let regionInfos = Object.values(data);
-      console.log(`Got metadata for ${regionInfos.length} regions: ` +
-        regionInfos.map(r => r.region).join(','));
-      regionInfos = regionInfos.filter(r => r.enabled);
-      console.log(`${regionInfos.length} regions are enabled: ` + regionInfos.map(r => r.region).join(','));
-      // 3 units of progress for each region: stations, peers, then adding to
-      // map.
-      $('#progressbar').progressbar('option', 'max', regionInfos.length * 3);
-      resolve(regionInfos);
-    })
-      .fail((jqxhr, textStatus, error) => {
-        $('#progresslabel').text('Error loading region metadata').addClass('error');
-      });
-  });
-}
-
-
-// Fetches the stations and peers for a given region.
-//
-// Returns a promise for the data.
-
-function getStationsForRegion(regionInfo) {
-  return new Promise((resolve, reject) => {
-    const stations = {};
-    var dataUrl = `/sync/${regionInfo.region}/sync.json`;
-    console.log('Loading region data from', dataUrl);
-    $.getJSON(dataUrl, data => {
-      const region = regionInfo.region;
-      Object.keys(data).forEach(stationId => {
-        const station = data[stationId];
-        station.name = stationId;
-        station.region = region;
-      });
-      data = xformObject(
-        data,
-        k => stationKey(region, k),
-        v => { v.peers = xformObject(v.peers, k => stationKey(region, k)); return v; });
-      const stationIds = Object.keys(data);
-      console.log(`Loaded ${stationIds.length} stations`);
-      const pb = $('#progressbar');
-      pb.progressbar('value', pb.progressbar('value') + 1);
-      stationIds.forEach(stationId => {
-        stations[stationId] = data[stationId];
-      });
-
-      addStationsToMap(map, stations);
-      pb.progressbar('value', pb.progressbar('value') + 1);
-      Object.keys(stations).forEach(stationKey => {
-        allStationInfos[stationKey] = stations[stationKey];
-      });
-      $('#progresslabel').text(`${Object.keys(allStationInfos).length} feeders loaded.`);
-
-      resolve(stations);
-    });
-  });
-}
-
-
-function xformObject(obj, xformKey, xformValue) {
-  const identity = (x) => x;
-  xformKey = xformKey || identity;
-  xformValue = xformValue || identity;
-  const newObj = {};
-  Object.keys(obj).forEach(k => {
-    newObj[xformKey(k)] = xformValue(obj[k]);
-  });
-  return newObj;
-}
-
-
-function stationSearchHandler() {
-  var input, filter, ul, li, a, i, txtValue;
-  input = document.getElementById('search-input');
-  filter = input.value.toUpperCase();
-  ul = document.getElementById('stations');
-  li = ul.getElementsByTagName('li');
-
-  // Loop through all list items, and hide those who don't match the search
-  // query
-  for (i = 0; i < li.length; i++) {
-    txtValue = li[i].textContent || li[i].innerText;
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = '';
-    } else {
-      li[i].style.display = 'none';
-    }
-  }
-}
-
-
-// Creates a line between two stations.
-
-function lineBetweenStations(s1, s2, options) {
-  var s1m = s1.marker;
-  var s2m = s2.marker;
-  if (s1m && s2m) {
-    var latlngs = [s1m.getLatLng(), s2m.getLatLng()];
-    var line = L.polyline(latlngs, options).addTo(map);
-    return line;
-  } else {
-    return null;
-  }
-}
-
-
-// Chooses a peer line color based on sync stats.
-
-function colorForSyncStats(stats) {
-  const peer_sync_count = stats[0];
-  const peer_sync_err = stats[1];
-  const peer_ppm_offset = stats[2];
-  const peer_score = stats[3];
-  let quality = 2;
-  if (peer_sync_count <= 10) {
-    quality = Math.min(quality, 1);
-  }
-  if (peer_sync_err > 2 && peer_sync_err <= 4) {
-    quality = Math.min(quality, 1);
-  } else if (peer_sync_err > 4) {
-    quality = Math.min(quality, 0);
-  }
-  const colors = ['red', 'yellow', 'green'];
-  return colors[quality];
-}
-
-
-var peerLines = [];
-var ephemeralPeerLines = [];
-var mouseOveredStation = null;
-
-// Draws lines from a station to its peers. There can be two sets of
-// lines shown at a given time: ephemeral, and non-ephemeral.
-
-function drawLinesToPeers(stationInfo, isEphemeral) {
-  if (isEphemeral) {
-    if (!stationInfo) {
-      // Removing lines.
-      mouseOveredStation = null;
-    } else if (stationInfo.name === mouseOveredStation) {
-      // Lines are already drawn.
-      return;
-    } else {
-      // New lines.
-      mouseOveredStation = stationInfo.name;
-    }
-  }
-
-  var lines;
-  if (isEphemeral) {
-    lines = ephemeralPeerLines;
-  } else {
-    lines = peerLines;
-  }
-  if (lines) {
-    lines.forEach(pl => map.removeLayer(pl));
-    lines = [];
-  }
-
-  if (stationInfo && stationInfo.peers) {
-    Object.keys(stationInfo.peers).forEach(peerId => {
-      const peer = allStationInfos[peerId];
-      // only draw a line if neither peer is timed out (bad timing/sync)
-      if (peer
-        && (peer.bad_syncs == null || peer.bad_syncs == 0)
-        && (stationInfo.bad_syncs == null || stationInfo.bad_syncs == 0)) {
-          var options;
-          const color = colorForSyncStats(stationInfo.peers[peerId]);
-          if (isEphemeral) {
-            options = { color: color, opacity: 0.3 };
-          } else {
-            options = { color: color, opacity: 0.5 };
-          }
-          const line = lineBetweenStations(stationInfo, peer, options);
-          if (line) {
-            lines.push(line);
-          }
+map.on('load', async () => {
+    try {
+        const rainviewer = await fetch('https://api.rainviewer.com/public/weather-maps.json')
+            .then(res => res.json());
+    
+        const newframe = rainviewer.radar.nowcast[rainviewer.radar.nowcast.length - 1];
+        const newlayer = `rainviewer_${newframe.path}`;
+    
+        const layers = map.getStyle().layers;
+        const lastlayerid = layers[layers.length - 1].id;
+        if (lastlayerid.startsWith('rainviewer_')) {
+            map.removeLayer(lastlayerid);
         }
-    });
-    map.removeLayer(stationInfo.marker);
-    stationInfo.marker.addTo(map);
-  }
-
-  if (isEphemeral) {
-    ephemeralPeerLines = lines;
-  } else {
-    peerLines = lines;
-  }
-}
-
-
-var selectedStationName = null;
-
-// Selecting a station draws bold peer lines and displays station info
-// in the sidebar.
-
-function selectStation(stationInfo) {
-  if (!stationInfo) {
-    // Deselecting station.
-    selectedStationName = null;
-    $('#station-info').hide();
-    drawLinesToPeers(null);
-    return;
-  } else if (stationInfo.name === selectedStationName) {
-    // Station is already selected, so don't do anything.
-    return;
-  }
-  selectedStationName = stationInfo.name;
-  $('#si-name').text(stationInfo.name);
-  const region = stationInfo.region;
-  let regionInfo = region ? allRegionInfos.find(ri => ri.region === region) : null;
-  if (regionInfo) {
-    $('#si-region').text(`${regionInfo.name} (${region})`);
-    const euc = encodeURIComponent;
-    const syncUrl = new URL(`/sync/feeder.html?${euc(region)}&${euc(stationInfo.name)}`, 'https://adsb.ezz456ch.xyz/').toString();
-    $('#si-sync-stats-link').attr('href', syncUrl).attr('target', '_blank');
-  } else {
-    $('#si-region').text('Unknown');
-  }
-
-  if (stationInfo.bad_syncs != null && stationInfo.bad_syncs > 0) {
-    $('#si-num-label').text('Bad sync, check coordinates and power supply!');
-    $('#si-num-peers').text('');
-    $('#si-closest-peer-dist').text('-');
-    $('#si-farthest-peer-dist').text('-');
-  } else if (stationInfo.peers) {
-    $('#si-num-label').text('Synced peers:');
-    $('#si-num-peers').text(Object.keys(stationInfo.peers).length);
-    const peerDistances = Object.keys(stationInfo.peers)
-      .filter(p => allStationInfos[p] && allStationInfos[p].lat)
-      .map(p => stationDistanceKm(stationInfo, allStationInfos[p]))
-      .sort((a, b) => a - b);
-    if (peerDistances.length > 0) {
-      const kmToMiles = (x) => x * 0.621371;
-      const closestKm = peerDistances[0];
-      const farthestKm = peerDistances[peerDistances.length - 1];
-      $('#si-closest-peer-dist').text(`${closestKm.toFixed(1)} km (${kmToMiles(closestKm).toFixed(1)} miles)`);
-      $('#si-farthest-peer-dist').text(`${farthestKm.toFixed(1)} km (${kmToMiles(farthestKm).toFixed(1)} miles)`);
-    } else {
-      $('#si-closest-peer-dist').text('');
-      $('#si-farthest-peer-dist').text('');
+    
+        map.addLayer({
+            id: newlayer,
+            type: 'raster',
+            source: {
+                type: 'raster',
+                tiles: [`${rainviewer.host}${newframe.path}/256/{z}/{x}/{y}/2/1_1.png`],
+                tileSize: 256
+            },
+            layout: { visibility: 'visible' },
+            minzoom: 0,
+            maxzoom: 18,
+            paint: {
+                'raster-opacity': 0.5
+            }
+        });
+    
+        setInterval(async () => {
+            try {
+                const updatedRainViewer = await fetch('https://api.rainviewer.com/public/weather-maps.json')
+                    .then(res => res.json());
+                const newframe = updatedRainViewer.radar.nowcast[updatedRainViewer.radar.nowcast.length - 1];
+                const newlayer = `rainviewer_${newframe.path}`;
+    
+                const layers = map.getStyle().layers;
+                const lastlayerid = layers[layers.length - 1].id;
+                if (lastlayerid.startsWith('rainviewer_')) {
+                    map.removeLayer(lastlayerid);
+                }
+    
+                map.addLayer({
+                    id: newlayer,
+                    type: 'raster',
+                    source: {
+                        type: 'raster',
+                        tiles: [`${updatedRainViewer.host}${newframe.path}/256/{z}/{x}/{y}/2/1_1.png`],
+                        tileSize: 256
+                    },
+                    layout: { visibility: 'visible' },
+                    minzoom: 0,
+                    maxzoom: 18,
+                    paint: {
+                        'raster-opacity': 0.5
+                    }
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }, 150000);
+    
+    } catch (error) {
+        console.error(error);
     }
-  } else {
-    $('#si-num-peers').text('Unknown');
-  }
-  $('#station-info').show();
 
-  if (stationInfo.lat == null || stationInfo.lon == null) {
-    $('#si-closest-peer-dist').text('private');
-    $('#si-farthest-peer-dist').text('private');
-    $('#si-peer-loc').text('private');
-    return;
-  } else {
-    $('#si-peer-loc').text(stationInfo.lat.toFixed(2) + ', ' + stationInfo.lon.toFixed(2));
-  }
+    let features = [];
 
-  drawLinesToPeers(stationInfo);
-  map.panInside(stationInfo.marker.getLatLng(), { padding: [300, 300] });
-  stationInfo.marker.bindPopup(escape(stationInfo.name)).openPopup();
-}
+    try {
+        const regioninfo = await fetch('mirror_regions.json');
+        const regiondata = await regioninfo.json();
+    
+        for (const region of Object.values(regiondata)) {
+            if (region.enabled) {
+                const response = await fetch(`/sync/${region.region}/sync.json`);
+                const data = await response.json();
+    
+                const regionFeatures = Object.keys(data).map(key => ({
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [data[key].lon, data[key].lat]
+                    },
+                    'properties': {
+                        'description': `
+                        <p style="margin: 0px">Name: ${key}<br>
+                        Region: ${region.name} (${region.region})<br>
+                        Pos.: ${data[key].lat}, ${data[key].lon}<br>
+                        <p class="link" style="margin:0px">*Approximate location</p>
+                        <a class="link" style="pointer-events: auto;" href="/sync/feeder.html?${region.region}&${key}#">Synced Stats</a>
+                        `
+                    }
+                }));
+    
+                features = [...features, ...regionFeatures];
+            }
+        }
 
+        map.addSource('locations', {
+            type: 'geojson',
+            data: {
+                type: 'FeatureCollection',
+                features: features
+            }
+        });
 
-// Adds the specified stations to the map and sets up event handlers.
-
-function addStationsToMap(map, stationInfos) {
-  Object.keys(stationInfos).forEach(stationId => {
-    const s = stationInfos[stationId];
-    if (s.lat !== null && s.lon !== null) {
-      // marker jitter is just to separate markers that would otherwise be
-      // overlapping
-      const jitter = () => Math.random() * 0.001 - 0.0005;
-      const marker = L.circleMarker([s.lat + jitter(), s.lon + jitter()],
-        {
-          color: regionMarkerColor(s.region),
-          radius: 8
-        }).addTo(map);
-      s.marker = marker;
-      marker.on('click', (e) => {
-        L.DomEvent.stopPropagation(e);
-        selectStation(s);
-      });
-      marker.on('mouseover', () => drawLinesToPeers(s, true));
-      marker.on('mouseout', () => drawLinesToPeers(null, true));
+        // Add a layer for displaying icon
+        map.addLayer({
+            'id': 'locations-layer',
+            'type': 'symbol',
+            'source': 'locations',
+            'layout': {
+                'icon-image': 'triangle-1',
+                'icon-allow-overlap': true
+            },
+            'paint': {
+                'icon-opacity': 0.5
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching data:', error);
     }
-  });
-}
 
-// Loads region and station info, and manages the loading progress
-// bar.
+    map.on('click', 'locations-layer', (e) => {
+        const coordinates = e.features[0].geometry.coordinates.slice();
+        const properties = e.features[0].properties;
 
-async function loadAllStations(map) {
-  allRegionInfos = await getRegionsMetadata();
-  const pb = $('#progressbar');
+        const popupContent = `
+            ${properties.description}
+        `;
 
-  for (const ri of allRegionInfos) {
-    ri.promise = getStationsForRegion(ri);
-  }
-  for (const ri of allRegionInfos) {
-    //$('#progresslabel').text(`Loading region ${ri.region} / ${ri.name}`);
-    const stations = await ri.promise;
-  }
-  $('#progresslabel').text(`${Object.keys(allStationInfos).length} feeders in the network.`);
-  // Remove the remnants of the progressbar (but leave the label).
-  pb.removeClass();
-  $('#progresslabel').removeClass();
-  $('#progressbar > div').remove();
-  return;
-}
-
-
-async function initialize() {
-  // Create map.
-  map = L.map('map-canvas');
-  L.control.scale({ maxWidth: 100 }).addTo(map);
-  var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/ezz456ch/clukyvend002x01pb8xor4jrr/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZXp6NDU2Y2giLCJhIjoiY2xyejA2c21qMXR1ZjJtcHF4OWNwYmx0ayJ9.t0RfR9x4m8owrAuoVlnQtQ', {
-    attribution: '<a href="https://www.mapbox.com/about/maps/">© Mapbox</a> <a href="https://www.openstreetmap.org/">© OpenStreetMap</a>',
-    minZoom: 2,
-    maxZoom: 18,
-  });
-  // Add the mapbox layer to the map
-  map.addLayer(mapbox);
-  map.fitWorld();
-  map.on('click', () => selectStation(null));
-
-  // Load stations.
-  await loadAllStations(map);
-
-  // Build station list.
-  Object.keys(allStationInfos)
-    .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-    .forEach(k => {
-      const station = allStationInfos[k];
-      const stationname = k.split(':')[1].trim();
-      $('<li><a href="#">' + stationname + '</a></li>').attr('id', 'li-' + k).click(() => selectStation(station)).appendTo($('#stations'));
+        new mapboxgl.Popup(
+            {
+                closeButton: false,
+            }
+        )
+            .setLngLat(coordinates)
+            .setHTML(popupContent)
+            .addTo(map);
     });
-}
+
+    map.on('mouseenter', 'locations-layer', () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+    map.on('mouseleave', 'locations-layer', () => {
+        map.getCanvas().style.cursor = '';
+    });
+});

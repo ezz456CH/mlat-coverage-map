@@ -4,56 +4,19 @@
   <title>MLAT Feeder Coverage - adsb.ezz456ch.xyz</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.0/leaflet.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.0/leaflet-src.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css" />
   <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <script src="overlay.js"></script>
 
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <link rel="apple-touch-icon" href="ezz456CH_icon_128px.png"
+  <link rel="apple-touch-icon" href="ezz456CH_icon_128px.png" 
 </head>
-
-<body onload="initialize()">
-  <div id="sidebar-container">
-    <h1>MLAT Feeder Coverage</h1>
-    <p class="note"><b>For privacy locations are approximate</b></p>
-    <div id="progressbar">
-      <p id="progresslabel" class="progresslabel">Loading...</p>
-    </div>
-    <div id="sidebar-content">
-      <p><b>Feeders are operated by people just like you.</b> For
-        information on how you can become a feeder, contribute data to
-        the this network,
-        <a class="link" href="https://docs.ezz456ch.xyz/add-adsb-coverage" target="_blank">click here</a>.
-	  </p>
-      <p>
-        Click or hover over a feeder on the map to see the peers it's
-        synchronized with for multilateration. Line color indicates
-        quality of the peer synchronization.
-      </p>
-      <input type="text" id="search-input" onkeyup="stationSearchHandler()" placeholder="Search..."
-        style="width: 100%">
-      <div id="stations-container">
-        <ul id="stations">
-        </ul>
-      </div>
-      <div id="station-info" class="hidden">
-          <h2> <span id="si-name">Feeder name</span></h2>
-          <div><span class="si-label" id="si-num-label">Synced peers:</span> <span id="si-num-peers">1000</span>     <span><a id="si-sync-stats-link">Sync stats</a></span></div>
-        <div><span class="si-label">Region:</span> <span id="si-region">region</span></div>
-        <div><span class="si-label">Closest peer:</span> <span id="si-closest-peer-dist">0</span></div>
-        <div><span class="si-label">Farthest peer:</span> <span id="si-farthest-peer-dist">0</span></div>
-        <div><span class="si-label">Approximate location:</span> <span id="si-peer-loc">0</span></div>
-      </div>
-    </div>
-  </div>
-  <div id="map-container">
-    <div id="map-canvas"></div>
-  </div>
+<body>
+  <div id="map"></div>
+<script src="overlay.js"></script>
 </body>
-
 </html>

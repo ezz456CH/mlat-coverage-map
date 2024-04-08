@@ -5,14 +5,56 @@
     font-style: normal;
 }
 
-html, body {
-    background-color: #212121;
-    color: #ffffff;
-    height: 100%;
+body {
     margin: 0;
-    padding: 0px;
-    font-family: "Cascadia Code";
-    font-size: 16px;
+    padding: 0;
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.mapboxgl-ctrl-attrib-inner {
+    font-family: 'Cascadia Code';
+}
+
+.mapboxgl-popup {
+    max-width: 400px;
+    font: 12px/20px 'Cascadia Code';
+}
+
+.mapboxgl-popup-content {
+    background: rgba(31, 31, 31, 0.5);
+    color: #ffffff;
+    border-radius: 3px;
+    box-shadow: none;
+    padding: 10px 10px 15px;
+    pointer-events: none;
+    user-select: none;
+    position: relative;
+}
+
+.mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
+    border-bottom-color: transparent;
+}
+
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
+    border-top-color: transparent;
+}
+
+.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+    border-right-color: transparent;
+}
+
+.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+    border-left-color: transparent;
 }
 
 ::-webkit-scrollbar {
@@ -33,12 +75,6 @@ html, body {
 
 ::-webkit-scrollbar-corner {
     background: #212121;
-}
-
-@media screen and (min-width: 600px) {
-    html, body {
-        margin-left: 5px;
-    }
 }
 
 h1 {
@@ -69,132 +105,10 @@ input:focus {
     box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1), 0px 0px 0px 3.5px rgba(58, 108, 217, 0.5);
 }
 
-@media screen and (max-width: 599px) {
-    #sidebar-content {
-        display: none;
-    }
-    .note {
-        display: none;
-    }
-    h1 {
-        font-size: 1.2rem;
-        position: absolute;
-        z-index: 1000;
-        width: 100%;
-        text-align: center;
-    }
-    #progresslabel {
-        display: none;
-    }
-}
-
-#progresslabel {
-    font-family: "Cascadia Code";
-    font-size: 16px;
-    position: absolute;
-    margin: auto;
-}
-
-#progressbar {
-    height: 20px;
-    color: #ababab;
-    background-color: transparent;
-    border: none;
-}
-
-@media screen and (max-width: 599px) {
-    #sidebar-container {
-        /* display: none; */
-    }
-}
-
-@media screen and (min-width: 600px) {
-    #sidebar-container {
-        float: left;
-        width: 350px;
-        height: 100%;
-        margin-right: 15px;
-    }
-}
-
-.leaflet-container {
-    font: 12px/1.5 "Cascadia Code";
-}
-
-.leaflet-popup-content-wrapper, .leaflet-popup-tip {
-    background: transparent;
-    color: #ffffff;
-    box-shadow: none;
-    pointer-events: none;
-    user-select: none;
-}
-
-.leaflet-popup-content{
-    margin: 13px 19px;
-    line-height: 1;
-    font-family: "Cascadia Code";
-}
-.leaflet-container a.leaflet-popup-close-button {
-    display: none;
-}
-
-#map-canvas {
-    height: 100%;
-    margin: 0px;
-    background: black;
-}
-
-#map-container {
-    height: 100%;
-}
-
-@media screen and (min-width: 600px) {
-    margin-left: 350px;
-}
-
 .hidden {
     display: none;
 }
 
-#si-sync-stats-link,
 .link {
     color: #ababab;
-}
-
-#stations-container {
-    height: 200px;
-    margin-top: 20px;
-    overflow: scroll;
-}
-
-#stations {
-    /* Remove default list styling */
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-#stations li a {
-    margin-top: -1px;
-    background-color: #f6f6f638;
-    text-decoration: none;
-    color: white;
-    display: block;
-}
-
-#stations li a:hover:not(.header) {
-    background-color: #bababa; /* Add a hover effect to all links, except for headers */
-}
-
-.note {
-    font-size: 0.8rem;
-    opacity: 0.75;
-}
-
-.error {
-    color: #ff8585;
-}
-
-.si-label {
-    font-weight: bold;
 }

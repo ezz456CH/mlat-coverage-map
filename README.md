@@ -1,12 +1,16 @@
-# mlat-server-sync-map (ezz456CH Fork)
+# mlat-coverage-map (ezz456CH Fork)
 Map and sync table to show sync status for mlat-server
+
+- This fork changes from Leaflet to Mapbox GL JS.
+- This fork adds RainViewer radar as layers.
+- Note that some features in the original repository may have been removed.
 
 ## How to use(maybe not 100% correct but it should work)
 
 1.Clone this repo(in this case i will clone to /opt/table)
 
 ```
-git clone https://github.com/ezz456CH/mlat-server-sync-map.git /opt/table/
+git clone https://github.com/ezz456CH/mlat-coverage-map.git /opt/table/
 ```
 
 ## 2.Add web server config
@@ -20,7 +24,7 @@ alias.url += (
 )
 ```
 
-## 3.Run the do_sync.sh script as sudo
+## 3.Run the do_sync.sh script as sudo  (Actually, this can be run later)
 
 ```
 cd /opt/table/synctable/script
