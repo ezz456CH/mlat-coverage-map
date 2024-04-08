@@ -3,17 +3,19 @@ const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/ezz456ch/clukyvend002x01pb8xor4jrr',
     zoom: 1.5,
-    hash: true
-});
+    hash: true,
+    attributionControl: false
+}).addControl(new mapboxgl.AttributionControl({
+    customAttribution: '<a target="_blank" rel="noopener noreferrer" href="https://www.rainviewer.com/api.html">rainviewer.com</a>'
+}));
 
 map.on('load', async () => {
-    
     try {
         const rainviewer = await fetch('https://api.rainviewer.com/public/weather-maps.json')
             .then(res => res.json());
-    
+
         const newframe = rainviewer.radar.nowcast[rainviewer.radar.nowcast.length - 1];
-    
+
         map.addLayer({
             id: 'rainviewer',
             type: 'raster',
@@ -29,7 +31,7 @@ map.on('load', async () => {
                 'raster-opacity': 0.5
             }
         });
-    
+
     } catch (error) {
         console.error(error);
     }
@@ -39,12 +41,12 @@ map.on('load', async () => {
     try {
         const regioninfo = await fetch('mirror_regions.json');
         const regiondata = await regioninfo.json();
-    
+
         for (const region of Object.values(regiondata)) {
             if (region.enabled) {
                 const response = await fetch(`/sync/${region.region}/sync.json`);
                 const data = await response.json();
-    
+
                 const regionFeatures = Object.keys(data).map(key => ({
                     'type': 'Feature',
                     'geometry': {
@@ -61,7 +63,7 @@ map.on('load', async () => {
                         `
                     }
                 }));
-    
+
                 features = [...features, ...regionFeatures];
             }
         }
