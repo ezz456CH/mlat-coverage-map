@@ -1,4 +1,5 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXp6NDU2Y2giLCJhIjoiY2xyejA2c21qMXR1ZjJtcHF4OWNwYmx0ayJ9.t0RfR9x4m8owrAuoVlnQtQ';
+
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/ezz456ch/clukyvend002x01pb8xor4jrr',
@@ -11,10 +12,17 @@ const map = new mapboxgl.Map({
 
 map.on('load', async () => {
     try {
+        // fetch weather radar data from rainviewer
         const rainviewer = await fetch('https://api.rainviewer.com/public/weather-maps.json')
             .then(res => res.json());
 
         const newframe = rainviewer.radar.nowcast[rainviewer.radar.nowcast.length - 1];
+
+        // remove rainviewer layer if exists
+        if (map.getLayer('rainviewer')) {
+            map.removeLayer('rainviewer');
+            map.removeSource('rainviewer');
+        }
 
         map.addLayer({
             id: 'rainviewer',
@@ -35,6 +43,41 @@ map.on('load', async () => {
     } catch (error) {
         console.error(error);
     }
+
+    setInterval(async function () {
+        try {
+            // fetch weather radar data from rainviewer
+            const rainviewer = await fetch('https://api.rainviewer.com/public/weather-maps.json')
+                .then(res => res.json());
+
+            const newframe = rainviewer.radar.nowcast[rainviewer.radar.nowcast.length - 1];
+
+            // remove rainviewer layer if exists
+            if (map.getLayer('rainviewer')) {
+                map.removeLayer('rainviewer');
+                map.removeSource('rainviewer');
+            }
+
+            map.addLayer({
+                id: 'rainviewer',
+                type: 'raster',
+                source: {
+                    type: 'raster',
+                    tiles: [`${rainviewer.host}${newframe.path}/256/{z}/{x}/{y}/2/1_1.png`],
+                    tileSize: 256
+                },
+                layout: { visibility: 'visible' },
+                minzoom: 0,
+                maxzoom: 18,
+                paint: {
+                    'raster-opacity': 0.5
+                }
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+    }, 900000); //update rainviewer layer every 15 minutes
 
     let features = [];
 
@@ -76,7 +119,7 @@ map.on('load', async () => {
             }
         });
 
-        // Add a layer for displaying icon
+        // Add a icon layer
         map.addLayer({
             'id': 'locations-layer',
             'type': 'symbol',
