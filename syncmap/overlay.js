@@ -7,21 +7,15 @@ const map = new mapboxgl.Map({
 });
 
 map.on('load', async () => {
+    
     try {
         const rainviewer = await fetch('https://api.rainviewer.com/public/weather-maps.json')
             .then(res => res.json());
     
         const newframe = rainviewer.radar.nowcast[rainviewer.radar.nowcast.length - 1];
-        const newlayer = `rainviewer_${newframe.path}`;
-    
-        const layers = map.getStyle().layers;
-        const lastlayerid = layers[layers.length - 1].id;
-        if (lastlayerid.startsWith('rainviewer_')) {
-            map.removeLayer(lastlayerid);
-        }
     
         map.addLayer({
-            id: newlayer,
+            id: 'rainviewer',
             type: 'raster',
             source: {
                 type: 'raster',
@@ -35,39 +29,6 @@ map.on('load', async () => {
                 'raster-opacity': 0.5
             }
         });
-    
-        setInterval(async () => {
-            try {
-                const updatedRainViewer = await fetch('https://api.rainviewer.com/public/weather-maps.json')
-                    .then(res => res.json());
-                const newframe = updatedRainViewer.radar.nowcast[updatedRainViewer.radar.nowcast.length - 1];
-                const newlayer = `rainviewer_${newframe.path}`;
-    
-                const layers = map.getStyle().layers;
-                const lastlayerid = layers[layers.length - 1].id;
-                if (lastlayerid.startsWith('rainviewer_')) {
-                    map.removeLayer(lastlayerid);
-                }
-    
-                map.addLayer({
-                    id: newlayer,
-                    type: 'raster',
-                    source: {
-                        type: 'raster',
-                        tiles: [`${updatedRainViewer.host}${newframe.path}/256/{z}/{x}/{y}/2/1_1.png`],
-                        tileSize: 256
-                    },
-                    layout: { visibility: 'visible' },
-                    minzoom: 0,
-                    maxzoom: 18,
-                    paint: {
-                        'raster-opacity': 0.5
-                    }
-                });
-            } catch (error) {
-                console.error(error);
-            }
-        }, 150000);
     
     } catch (error) {
         console.error(error);
