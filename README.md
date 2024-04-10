@@ -24,7 +24,7 @@ alias.url += (
 )
 ```
 
-## 3.Run the do_sync.sh script as sudo  (Actually, this can be run later)
+## 3.Run the do_sync.sh script as sudo
 
 ```
 cd /opt/table/synctable/script
