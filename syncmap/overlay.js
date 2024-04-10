@@ -10,6 +10,10 @@ const map = new mapboxgl.Map({
     customAttribution: '<a target="_blank" rel="noopener noreferrer" href="https://www.rainviewer.com/api.html">RainViewer.com</a>'
 }));
 
+map.dragRotate.disable();
+
+map.touchZoomRotate.disableRotation();
+
 map.on('load', async () => {
     try {
         // fetch weather radar data from rainviewer
