@@ -16,7 +16,7 @@ map.on('load', async () => {
         const rainviewer = await fetch('https://api.rainviewer.com/public/weather-maps.json')
             .then(res => res.json());
 
-        const newframe = rainviewer.radar.nowcast[rainviewer.radar.nowcast.length - 1];
+        const newframe = rainviewer.radar.past[rainviewer.radar.past.length - 1];
 
         // remove rainviewer layer if already exists
         if (map.getLayer('rainviewer')) {
@@ -50,7 +50,7 @@ map.on('load', async () => {
             const rainviewer = await fetch('https://api.rainviewer.com/public/weather-maps.json')
                 .then(res => res.json());
 
-            const newframe = rainviewer.radar.nowcast[rainviewer.radar.nowcast.length - 1];
+            const newframe = rainviewer.radar.past[rainviewer.radar.past.length - 1];
 
             // remove rainviewer layer if already exists
             if (map.getLayer('rainviewer')) {
@@ -77,7 +77,7 @@ map.on('load', async () => {
         } catch (error) {
             console.error(error);
         }
-    }, 900000); //update rainviewer layer every 15 minutes
+    }, 600000); //update rainviewer layer every 10 minutes
 
     let features = [];
 
