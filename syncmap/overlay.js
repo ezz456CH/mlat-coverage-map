@@ -7,7 +7,7 @@ const map = new mapboxgl.Map({
     hash: true,
     attributionControl: false
 }).addControl(new mapboxgl.AttributionControl({
-    customAttribution: '<a target="_blank" rel="noopener noreferrer" href="https://www.rainviewer.com/api.html">rainviewer.com</a>'
+    customAttribution: '<a target="_blank" rel="noopener noreferrer" href="https://www.rainviewer.com/api.html">RainViewer.com</a>'
 }));
 
 map.on('load', async () => {
@@ -18,7 +18,7 @@ map.on('load', async () => {
 
         const newframe = rainviewer.radar.nowcast[rainviewer.radar.nowcast.length - 1];
 
-        // remove rainviewer layer if exists
+        // remove rainviewer layer if already exists
         if (map.getLayer('rainviewer')) {
             map.removeLayer('rainviewer');
             map.removeSource('rainviewer');
@@ -29,14 +29,14 @@ map.on('load', async () => {
             type: 'raster',
             source: {
                 type: 'raster',
-                tiles: [`${rainviewer.host}${newframe.path}/256/{z}/{x}/{y}/2/1_1.png`],
-                tileSize: 256
+                tiles: [`${rainviewer.host}${newframe.path}/512/{z}/{x}/{y}/6/1_1.png`],
+                tileSize: 512
             },
             layout: { visibility: 'visible' },
             minzoom: 0,
             maxzoom: 18,
             paint: {
-                'raster-opacity': 0.5
+                'raster-opacity': 0.35
             }
         });
 
@@ -52,7 +52,7 @@ map.on('load', async () => {
 
             const newframe = rainviewer.radar.nowcast[rainviewer.radar.nowcast.length - 1];
 
-            // remove rainviewer layer if exists
+            // remove rainviewer layer if already exists
             if (map.getLayer('rainviewer')) {
                 map.removeLayer('rainviewer');
                 map.removeSource('rainviewer');
@@ -63,14 +63,14 @@ map.on('load', async () => {
                 type: 'raster',
                 source: {
                     type: 'raster',
-                    tiles: [`${rainviewer.host}${newframe.path}/256/{z}/{x}/{y}/2/1_1.png`],
-                    tileSize: 256
+                    tiles: [`${rainviewer.host}${newframe.path}/512/{z}/{x}/{y}/6/1_1.png`],
+                    tileSize: 512
                 },
                 layout: { visibility: 'visible' },
                 minzoom: 0,
                 maxzoom: 18,
                 paint: {
-                    'raster-opacity': 0.5
+                    'raster-opacity': 0.35
                 }
             });
 
@@ -119,7 +119,7 @@ map.on('load', async () => {
             }
         });
 
-        // Add a icon layer
+        // add icon layer
         map.addLayer({
             'id': 'locations-layer',
             'type': 'symbol',
