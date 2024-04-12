@@ -1,9 +1,8 @@
 # mlat-coverage-map (ezz456CH Fork)
 Map and sync table to show sync status for mlat-server
 
-- This fork changes from Leaflet to Mapbox GL JS.
-- This fork adds RainViewer radar as layers.
-- Note that some features in the original repository may have been removed.
+This is a fork of wiedehopf's version of mlat-server-sync-map, 
+and this fork changes from Leaflet to Mapbox GL JS with RainViewer layers and modified some designs.
 
 ## How to use(maybe not 100% correct but it should work)
 
@@ -59,6 +58,4 @@ To ensure it works, I would recommend adding execute permission to the script
 sudo chmod +x /opt/table/synctable/script/do_sync.sh
 ```
 
-Note: The mapbox access token in overlay.js is restricted to specific URLs. If you will use it, don't forget to change the "access_token" in overlay.js. Otherwise, the map won't display
-
-Alternatively, you can change to another map if you want (=^･ω･^=)
+Note: The mapbox access token in overlay.js is restricted to specific URLs. If you will use it, don't forget to change the "mapboxgl.accessToken" in overlay.js. Otherwise, the map won't display
