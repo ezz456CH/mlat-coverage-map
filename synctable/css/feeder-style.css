@@ -1,8 +1,54 @@
-body  {
-        background-color: #111111;
-        font: 15px Verdana;
-        color: #e0e0e0;
+@font-face {
+        font-family: "Kanit";
+        src: url("/synctable/Kanit-Regular.ttf");
+        font-weight: normal;
+        font-style: normal;
 }
+
+body {
+        background-color: #111111 !important;
+        font: 15px "Kanit" !important;
+        color: #e0e0e0 !important;
+}
+
+.navbar {
+        background-color: rgb(0, 0, 0, 0.05);
+        backdrop-filter: blur(16px);
+}
+
+.navbar-brand,
+.navbar-nav,
+.nav-item,
+.nav-link,
+.navbar-toggler {
+        user-select: none;
+        pointer-events: auto;
+}
+
+.navbar-dark .navbar-brand {
+        color: rgba(255, 255, 255, .90) !important;
+        transition: color 0.1s ease;
+}
+
+.navbar-dark .navbar-brand:hover {
+        color: rgba(255, 255, 255, .75) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+        color: rgba(255, 255, 255, .90) !important;
+        transition: color 0.1s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+        color: rgba(255, 255, 255, .75) !important;
+}
+
+.navbar {
+        font-family: "Kanit";
+        user-select: none;
+        pointer-events: none;
+}
+
 a:visited, a:link, a:hover, a:active {
         color: #e0e0e0;
 }
@@ -15,12 +61,12 @@ table.peers {
         border-collapse: collapse;
 }
 td {
-        font: 16px Verdana;
+        font: 16px "Kanit";
         border: 1px solid #e0e0e0;
         padding: 1px 5px 1px 5px;
 }
 th {
-        font: 20px Verdana;
+        font: 20px "Kanit";
         border: 1px solid #e0e0e0;
         padding: 1px 5px 1px 5px;
         background: #226699;
@@ -56,18 +102,18 @@ table { position: relative; }
 
 .statstext {
         text-align: right;
-        font: 18px "Courier New";
+        font: 18px "Kanit";
 	font-weight: bold;
 }
 
 .count {
         text-align: right;
-        font: 18px "Courier New";
+        font: 18px "Kanit";
 	font-weight: bold;
 }
 
 .foot {
-        font: 11px Verdana;
+        font: 11px "Kanit";
 }
 
 .status {
@@ -81,7 +127,7 @@ table { position: relative; }
 }
 
 .feedname {
-	font: 25px "Courier New";
+	font-family: "Kanit";
 }
 
 td.green {
