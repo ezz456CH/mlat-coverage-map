@@ -12,8 +12,8 @@ body {
 }
 
 .navbar {
-	background-color: rgb(0, 0, 0, 0.05);
-	backdrop-filter: blur(16px);
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }
 
 .navbar-brand,
@@ -21,32 +21,35 @@ body {
 .nav-item,
 .nav-link,
 .navbar-toggler {
-	user-select: none;
-	pointer-events: auto;
+    user-select: none;
+    pointer-events: auto;
 }
 
 .navbar-dark .navbar-brand {
-	color: rgba(255, 255, 255, .90) !important;
-	transition: color 0.1s ease;
+    color: rgba(255,255,255,.90) !important;
+    transition: color 0.1s ease;
 }
 
 .navbar-dark .navbar-brand:hover {
-	color: rgba(255, 255, 255, .75) !important;
+    color: rgba(255,255,255,.75) !important;
 }
 
 .navbar-dark .navbar-nav .nav-link {
-	color: rgba(255, 255, 255, .90) !important;
-	transition: color 0.1s ease;
+    color: rgba(255,255,255,.90) !important;
+    transition: color 0.1s ease;
 }
 
 .navbar-dark .navbar-nav .nav-link:hover {
-	color: rgba(255, 255, 255, .75) !important;
+    color: rgba(255,255,255,.75) !important;
 }
 
 .navbar {
-	font-family: "Kanit";
-	user-select: none;
-	pointer-events: none;
+    font-family: "Kanit";
+}
+
+.navbar-brand{
+    font-size: 1rem !important;
+    font-weight: bold;
 }
 
 table {
@@ -73,7 +76,7 @@ table, td, th {
 }
 
 th {
-        font: 20px Verdana;
+        font: 20px Kanit;
         border: 1px solid #e0e0e0;
         background: #226699;
 	/*width: 80px;*/
@@ -86,7 +89,7 @@ th {
 td {
 	white-space: nowrap;
 	border-collapse: separate;
-	font: 18px Verdana;
+	font: 18px Kanit;
 }
 
 .redblock {
@@ -189,7 +192,7 @@ td {
 
 .state {
 	/*font-size: 7px;*/
-    	font: 9px verdana;
+    	font: 9px Kanit;
 }
 #sync-span:hover, #sync-span:active {
 	cursor: default;

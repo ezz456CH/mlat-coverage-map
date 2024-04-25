@@ -21,6 +21,8 @@ body {
 .navbar {
     background-color:rgb(0, 0, 0, 0.05);
     backdrop-filter: blur(16px);
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }
 
 .navbar-brand,
@@ -57,6 +59,11 @@ body {
     z-index: 999;
 }
 
+.navbar-brand{
+    font-size: 1rem !important;
+    font-weight: bold;
+}
+
 #map {
     position: absolute;
     top: 0;
@@ -71,6 +78,10 @@ body {
 .mapboxgl-popup {
     max-width: 400px;
     font: 12px/20px 'Cascadia Code';
+}
+
+p {
+    margin: 0 !important;
 }
 
 .mapboxgl-popup-content {
