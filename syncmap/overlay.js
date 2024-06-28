@@ -33,14 +33,14 @@ map.on('load', async () => {
             type: 'raster',
             source: {
                 type: 'raster',
-                tiles: [`${rainviewer.host}${newframe.path}/512/{z}/{x}/{y}/6/1_1.png`],
+                tiles: [`${rainviewer.host}${newframe.path}/512/{z}/{x}/{y}/2/1_1.png`],
                 tileSize: 512
             },
             layout: { visibility: 'visible' },
             minzoom: 0,
             maxzoom: 18,
             paint: {
-                'raster-opacity': 0.35
+                'raster-opacity': 0.75
             }
         });
 
@@ -67,14 +67,14 @@ map.on('load', async () => {
                 type: 'raster',
                 source: {
                     type: 'raster',
-                    tiles: [`${rainviewer.host}${newframe.path}/512/{z}/{x}/{y}/6/1_1.png`],
+                    tiles: [`${rainviewer.host}${newframe.path}/512/{z}/{x}/{y}/2/1_1.png`],
                     tileSize: 512
                 },
                 layout: { visibility: 'visible' },
                 minzoom: 0,
                 maxzoom: 18,
                 paint: {
-                    'raster-opacity': 0.35
+                    'raster-opacity': 0.75
                 }
             });
 
