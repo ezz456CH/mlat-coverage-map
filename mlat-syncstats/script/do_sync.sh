@@ -2,7 +2,7 @@
 
 # SPDX-License-Identifier: MIT
 
-SYNCPATH="/opt/table/synctable"
+SYNCPATH="/opt/mlat-coverage-map/mlat-synctable"
 
 if [ ! -d $SYNCPATH ]; then
     echo "$SYNCPATH doesn't exit, bailing"

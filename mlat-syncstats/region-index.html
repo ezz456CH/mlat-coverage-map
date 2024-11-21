@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>MLAT Sync Stats - adsb.ezz456ch.xyz</title>
+		<link rel="preload" href="/mlat-map/CascadiaCode-Regular.ttf" as="font" type="font/ttf" crossorigin="”anonymous”" />
+		<link rel="preload" href="/mlat-map/Kanit-Regular.ttf" as="font" type="font/ttf" crossorigin="”anonymous”" />
+		<link rel="stylesheet" type="text/css" href="css/style.css?v=2" />
+		<script src="js/jquery-3.4.1.min.js"></script>
+		<script src="js/jquery.tablesorter.min.js"></script>
+		<script src="js/jquery.tablesorter.widgets.min.js"></script>
+		<script src="syncstats2.js?v=3"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+		<link rel="icon" href="/mlat-map/favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="/mlat-map/favicon.ico" type="image/x-icon" />
+		<link rel="apple-touch-icon" href="/mlat-map/apple-icon.png"
+	</head>
+
+	<body onload="doInit(); refresh()">
+		<nav class="navbar navbar-expand-lg border-bottom navbar-dark">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="/">adsb.ezz456ch.xyz</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link" href="/">Map</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/mlat-map/">MLAT Coverage Map</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/mlat-syncstats/">MLAT Sync Stats</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div style="padding-top: 2rem; padding-left: 2rem; padding-right: 2rem; max-width: 80rem">
+			<h2>MLAT sync stats for Region <span id="REGION">0</span></h2>
+			<p>This table shows the current clock synchronization state between all receivers. It will automatically update about every 30 seconds.</p>
+			<p>Each receiver line has the following data:</p>
+
+			<ul>
+				<li>Receiver Name</li>
+				<li>Number of peers this receiver is synchronized with</li>
+				<li>
+					3 rows that contain:
+					<ul>
+						<li>Number of synchronizations done in the last ~30 sec ( &gt; 10 = green )</li>
+						<li>Sync error in &mu;sec - CHECK YOUR LOCATION if you have lots of red here ( &lt; 2 = green )</li>
+						<li>PPM offset - these are relative values, but if you have lots of red, check the ppm setting for dump1090 ( &lt; 50 = green )</li>
+					</ul>
+				</li>
+			</ul>
+
+			<font face="Kanit">
+				<input type="text" id="searchbar" placeholder="Search for feeder ..." /><br /><br />
+
+				<a href="/mlat-syncstats/">Go back to Region List</a><br /><br />
+
+				<table id="syncstatstable"></table>
+			</font>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	</body>
+</html>
