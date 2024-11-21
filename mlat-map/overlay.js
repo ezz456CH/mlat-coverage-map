@@ -106,7 +106,7 @@ map.on('load', async () => {
                         Region: ${region.name} (${region.region})<br>
                         Pos.: ${data[key].lat}, ${data[key].lon}<br>
                         <p class="link" style="margin:0px">*Approximate location</p>
-                        <a class="link" style="pointer-events: auto;" href="/mlat-syncstats/feeder.html?${region.region}&${key}#">Synced Stats</a>
+                        <a class="link" style="pointer-events: auto;" href="/mlat-syncstats/feeder.html?${region.region}&${key}#">Sync Stats</a>
                         `
                     }
                 }));
