@@ -33,7 +33,7 @@ map.on('load', async () => {
             type: 'raster',
             source: {
                 type: 'raster',
-                tiles: [`${rainviewer.host}${newframe.path}/512/{z}/{x}/{y}/2/1_1.png`],
+                tiles: [`${rainviewer.host}${newframe.path}/512/{z}/{x}/{y}/2/0_1.png`],
                 tileSize: 512
             },
             layout: { visibility: 'visible' },
@@ -91,7 +91,7 @@ map.on('load', async () => {
 
         for (const region of Object.values(regiondata)) {
             if (region.enabled) {
-                const response = await fetch(`/sync/${region.region}/sync.json`);
+                const response = await fetch(`/mlat-syncstats/${region.region}/sync.json`);
                 const data = await response.json();
 
                 const regionFeatures = Object.keys(data).map(key => ({
@@ -106,7 +106,7 @@ map.on('load', async () => {
                         Region: ${region.name} (${region.region})<br>
                         Pos.: ${data[key].lat}, ${data[key].lon}<br>
                         <p class="link" style="margin:0px">*Approximate location</p>
-                        <a class="link" style="pointer-events: auto;" href="/sync/feeder.html?${region.region}&${key}#">Synced Stats</a>
+                        <a class="link" style="pointer-events: auto;" href="/mlat-syncstats/feeder.html?${region.region}&${key}#">Synced Stats</a>
                         `
                     }
                 }));
