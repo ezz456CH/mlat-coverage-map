@@ -28,12 +28,12 @@ alias.url += (
 nginx:
 
 ```
-location /mlat-map/ {
-    alias /opt/mlat-coverage-map/mlat-map/;
+location ~ ^/mlat-map(/.*)?$ {
+    alias /opt/mlat-coverage-map/mlat-map$1;
 }
 
-location /mlat-syncstats/ {
-    alias /opt/mlat-coverage-map/mlat-syncstats/;
+location ~ ^/mlat-syncstats(/.*)?$ {
+    alias /opt/mlat-coverage-map/mlat-syncstats$1;
 }
 ```
 
