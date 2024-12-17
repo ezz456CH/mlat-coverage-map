@@ -1,19 +1,26 @@
 @font-face {
-        font-family: "Kanit";
-        src: url("/mlat-map/Kanit-Regular.ttf");
-        font-weight: normal;
-        font-style: normal;
+	font-family: Cascadia Code;
+	src: url(/mlat-map/webfonts/CascadiaCode-Bold.ttf) format("truetype");
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: Cascadia Code;
+	src: url(/mlat-map/webfonts/CascadiaCode-Regular.ttf) format("truetype");
+	font-weight: normal;
+	font-style: normal;
 }
 
 body {
-        background-color: #111111;
-        font: 15px "Kanit";
-        color: #e0e0e0;
+	background-color: #111111;
+	font: 15px "Line Seed Sans TH", sans-serif;
+	color: #e0e0e0;
 }
 
 .navbar {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
 }
 
 .navbar-brand,
@@ -21,118 +28,117 @@ body {
 .nav-item,
 .nav-link,
 .navbar-toggler {
-        user-select: none;
-        pointer-events: auto;
+	user-select: none;
+	pointer-events: auto;
 }
 
 .navbar-dark .navbar-brand {
-        color: rgba(255, 255, 255, .90) !important;
-        transition: color 0.1s ease;
+	color: rgba(255, 255, 255, .90) !important;
+	transition: color 0.1s ease;
 }
 
 .navbar-dark .navbar-brand:hover {
-        color: rgba(255, 255, 255, .75) !important;
+	color: rgba(255, 255, 255, .75) !important;
 }
 
 .navbar-dark .navbar-nav .nav-link {
-        color: rgba(255, 255, 255, .90) !important;
-        transition: color 0.1s ease;
+	color: rgba(255, 255, 255, .90) !important;
+	transition: color 0.1s ease;
 }
 
 .navbar-dark .navbar-nav .nav-link:hover {
-        color: rgba(255, 255, 255, .75) !important;
+	color: rgba(255, 255, 255, .75) !important;
 }
 
 .navbar {
-        font-family: "Kanit";
+	font-family: "Line Seed Sans TH";
 }
 
 .navbar-brand {
-        font-size: 1rem !important;
-        font-weight: bold;
+	font-size: 1rem !important;
+	font-weight: bold;
 }
 
 a:visited,
 a:link,
 a:hover,
 a:active {
-        color: #e0e0e0;
+	color: #e0e0e0;
 }
 
 .regiontable {
-        border: 1px solid #111111;
-        border-collapse: collapse;
+	border: 1px solid #111111;
+	border-collapse: collapse;
 }
 
 td {
-        font: 18px Kanit;
-        border: 1px solid #e0e0e0;
-        padding: 1px 5px 1px 5px;
+	font-family: "Cascadia Code";
+	border: 1px solid #e0e0e0;
+	padding: 1px 5px 1px 5px;
 }
 
 th {
-        font: 15px "Kanit";
-        font-weight: bold;
-        border: 1px solid #e0e0e0;
-        padding: 1px 5px 1px 5px;
-        background: #226699;
+	font-family: "Cascadia Code";
+	border: 1px solid #e0e0e0;
+	padding: 1px 5px 1px 5px;
+	background: #226699;
 
 }
 
 tbody tr:hover {
-        background: #5555FF;
+	background: #5555FF;
 }
 
 .disabled {
-        color: #888888;
+	color: #888888;
 }
 
 .disabled:hover {
-        background: #111111;
+	background: #111111;
 }
 
 table {
-        position: relative;
+	position: relative;
 }
 
 .rowlink::before {
-        content: "";
-        display: block;
-        position: absolute;
-        left: 0;
-        width: 100%;
-        height: 30px;
+	content: "";
+	display: block;
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 30px;
 }
 
 .count {
-        text-align: right;
-        font: 15px "Kanit";
+	text-align: right;
+	font: 15px "Line Seed Sans TH";
 }
 
 .foot {
-        font: 11px "Kanit";
+	font: 11px "Line Seed Sans TH";
 }
 
 .status {
-        color: #999999;
+	color: #999999;
 }
 
 .status_ok {
-        color: #21CC32;
+	color: #21CC32;
 }
 
 .status_stale {
-        color: #FF3232;
+	color: #FF3232;
 }
 
 .status_stale120 {
-        color: #DCE52A;
+	color: #DCE52A;
 }
 
 .status_stale240 {
-        color: #F2952E;
+	color: #F2952E;
 }
 
 .status_stale480 {
-        color: #FF3232;
+	color: #FF3232;
 }

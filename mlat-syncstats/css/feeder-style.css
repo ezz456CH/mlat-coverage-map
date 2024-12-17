@@ -1,13 +1,20 @@
 @font-face {
-        font-family: "Kanit";
-        src: url("/mlat-map/Kanit-Regular.ttf");
-        font-weight: normal;
-        font-style: normal;
+	font-family: Cascadia Code;
+	src: url(/mlat-map/webfonts/CascadiaCode-Bold.ttf) format("truetype");
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: Cascadia Code;
+	src: url(/mlat-map/webfonts/CascadiaCode-Regular.ttf) format("truetype");
+	font-weight: normal;
+	font-style: normal;
 }
 
 body {
         background-color: #111111 !important;
-        font: 15px "Kanit" !important;
+        font: 15px "Line Seed Sans TH", sans-serif !important;
         color: #e0e0e0 !important;
 }
 
@@ -44,7 +51,7 @@ body {
 }
 
 .navbar {
-        font-family: "Kanit";
+        font-family: "Line Seed Sans TH";
 }
 
 .navbar-brand {
@@ -70,13 +77,14 @@ table.peers {
 }
 
 td {
-        font: 16px "Kanit";
+        font-family: "Cascadia Code";
+        font-weight: bold;
         border: 1px solid #e0e0e0;
         padding: 1px 5px 1px 5px;
 }
 
 th {
-        font: 20px "Kanit";
+        font-family: "Cascadia Code";
         border: 1px solid #e0e0e0;
         padding: 1px 5px 1px 5px;
         background: #226699;
@@ -115,18 +123,18 @@ table {
 
 .statstext {
         text-align: right;
-        font: 18px "Kanit";
+        font-family: "Cascadia Code";
         font-weight: bold;
 }
 
 .count {
         text-align: right;
-        font: 18px "Kanit";
+        font-family: "Cascadia Code";
         font-weight: bold;
 }
 
 .foot {
-        font: 11px "Kanit";
+        font: 11px "Line Seed Sans TH";
 }
 
 .status {
@@ -142,7 +150,7 @@ table {
 }
 
 .feedname {
-        font-family: "Kanit";
+        font-family: "Line Seed Sans TH";
 }
 
 td.green {

@@ -1,21 +1,21 @@
 @font-face {
-    font-family: Cascadia Code;
-    src: url(CascadiaCode-Regular.ttf) format("truetype");
-    font-weight: 400;
-    font-style: normal;
+	font-family: Cascadia Code;
+	src: url(/mlat-map/webfonts/CascadiaCode-Bold.ttf) format("truetype");
+	font-weight: bold;
+	font-style: normal;
 }
 
 @font-face {
-    font-family: Kanit;
-    src: url(Kanit-Regular.ttf) format("truetype");
-    font-weight: 400;
-    font-style: normal;
+	font-family: Cascadia Code;
+	src: url(/mlat-map/webfonts/CascadiaCode-Regular.ttf) format("truetype");
+	font-weight: normal;
+	font-style: normal;
 }
 
 body {
     margin: 0;
     padding: 0;
-    font: 15px "Kanit" !important;
+    font: 15px "Line Seed Sans TH", sans-serif !important;
 }
 
 .navbar {
@@ -53,7 +53,7 @@ body {
 }
 
 .navbar {
-    font-family: "Kanit";
+    font-family: "Line Seed Sans TH";
     user-select: none;
     pointer-events: none;
     z-index: 999;
