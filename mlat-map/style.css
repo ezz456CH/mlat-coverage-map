@@ -1,15 +1,15 @@
 @font-face {
-	font-family: Cascadia Code;
-	src: url(/mlat-map/webfonts/CascadiaCode-Bold.ttf) format("truetype");
-	font-weight: bold;
-	font-style: normal;
+    font-family: Cascadia Code;
+    src: url(/mlat-map/webfonts/CascadiaCode-Bold.ttf) format("truetype");
+    font-weight: bold;
+    font-style: normal;
 }
 
 @font-face {
-	font-family: Cascadia Code;
-	src: url(/mlat-map/webfonts/CascadiaCode-Regular.ttf) format("truetype");
-	font-weight: normal;
-	font-style: normal;
+    font-family: Cascadia Code;
+    src: url(/mlat-map/webfonts/CascadiaCode-Regular.ttf) format("truetype");
+    font-weight: normal;
+    font-style: normal;
 }
 
 body {
@@ -19,7 +19,7 @@ body {
 }
 
 .navbar {
-    background-color:rgb(0, 0, 0, 0.05);
+    background-color: rgb(0, 0, 0, 0.05);
     backdrop-filter: blur(16px);
     padding-left: 1.5rem;
     padding-right: 1.5rem;
@@ -35,21 +35,21 @@ body {
 }
 
 .navbar-dark .navbar-brand {
-    color: rgba(255,255,255,.90) !important;
+    color: rgba(255, 255, 255, .90) !important;
     transition: color 0.1s ease;
 }
 
 .navbar-dark .navbar-brand:hover {
-    color: rgba(255,255,255,.75) !important;
+    color: rgba(255, 255, 255, .75) !important;
 }
 
 .navbar-dark .navbar-nav .nav-link {
-    color: rgba(255,255,255,.90) !important;
+    color: rgba(255, 255, 255, .90) !important;
     transition: color 0.1s ease;
 }
 
 .navbar-dark .navbar-nav .nav-link:hover {
-    color: rgba(255,255,255,.75) !important;
+    color: rgba(255, 255, 255, .75) !important;
 }
 
 .navbar {
@@ -59,7 +59,7 @@ body {
     z-index: 999;
 }
 
-.navbar-brand{
+.navbar-brand {
     font-size: 1rem !important;
     font-weight: bold;
 }
@@ -78,6 +78,7 @@ body {
 .mapboxgl-popup {
     max-width: 400px;
     font: 12px/20px 'Cascadia Code';
+    will-change: unset !important;
 }
 
 p {
